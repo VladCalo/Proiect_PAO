@@ -18,7 +18,6 @@ public class Audit {
         writer.flush();
     }
 
-
     public Audit() throws IOException {
         this.writer = new FileWriter("/Users/vladcalomfirescu/Desktop/Vlad/FAC/an 2/sem 2/PAO/Proiect/src/com/company/data/audit.csv");
     }

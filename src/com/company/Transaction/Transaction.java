@@ -13,10 +13,9 @@ public class Transaction {
     final private Date creationDate;
 
     public Transaction(String sourceIBAN, String destIBAN, double amount) throws Exception {
-
+        //verificam amount deoarece nu este permisa o tranzactie cu suma <=0
         if (amount <= 0)
             throw new Exception("The given amount is too low!");
-
         this.sourceIBAN = sourceIBAN;
         this.destIBAN = destIBAN;
         this.amount = amount;
@@ -30,6 +29,7 @@ public class Transaction {
         this.creationDate = creationDate;
     }
 
+    //etapa 3
     public Transaction(ResultSet in) throws SQLException {
         this.sourceIBAN = in.getString("sourceIBAN");
         this.destIBAN = in.getString("destIBAN");
@@ -47,6 +47,13 @@ public class Transaction {
                 '}';
     }
 
+    public String toCSV() {
+        return sourceIBAN +
+                "," + destIBAN +
+                "," + amount +
+                "," + (new SimpleDateFormat("yyyy-MM-dd h:m:s")).format(creationDate);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,13 +65,6 @@ public class Transaction {
     @Override
     public int hashCode() {
         return Objects.hash(sourceIBAN, destIBAN, amount, creationDate);
-    }
-
-    public String toCSV() {
-        return sourceIBAN +
-                "," + destIBAN +
-                "," + amount +
-                "," + (new SimpleDateFormat("yyyy-MM-dd h:m:s")).format(creationDate);
     }
 
     public String getFromIBAN() {

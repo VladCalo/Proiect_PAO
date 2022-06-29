@@ -5,9 +5,12 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Address {
-    private String street, city, county;
+    private String street;
+    private String city;
+    private String county;
     private int postalCode;
 
+    //constructor etapa 1
     public Address(String street, String city, String county, int postalCode) {
         this.street = street;
         this.city = city;
@@ -15,21 +18,12 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public void read(ResultSet in) throws SQLException {
-        this.street = in.getString("street");
-        this.city = in.getString("city");
-        this.county = in.getString("county");
-        this.postalCode = in.getInt("postalCode");
-    }
-
+    //construcotr cu citire de la tastatura
     public Address(Scanner in) {
         this.read(in);
     }
 
-    public Address(ResultSet in) throws SQLException {
-        this.read(in);
-    }
-
+    //citire de la tastatura
     public void read(Scanner in) {
         System.out.println("Street: ");
         this.street = in.nextLine();
@@ -39,6 +33,18 @@ public class Address {
         this.county = in.nextLine();
         System.out.println("Postal code: ");
         this.postalCode = Integer.parseInt(in.nextLine());
+    }
+
+    //constructor pentru etapa 3
+    public Address(ResultSet in) throws SQLException {
+        this.read(in);
+    }
+
+    public void read(ResultSet in) throws SQLException {
+        this.street = in.getString("street");
+        this.city = in.getString("city");
+        this.county = in.getString("county");
+        this.postalCode = in.getInt("postalCode");
     }
 
 

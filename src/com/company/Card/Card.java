@@ -10,26 +10,33 @@ public class Card {
     private String IBAN;
     private final Date expirationDate;
 
+    //este folosit HashSet pentru a pastra o singura a numerelor folosite
     static private final Set<String> usedNumbers = new HashSet<>();
 
     public Card(int cardId, String IBAN, String name) {
         this.cardId = cardId;
         this.IBAN = IBAN;
         this.name = name;
+        //generare numar card
         this.number = this.generateCardNumber();
 
+        //verificare daca numarul cardului a mai fost folosit sau nu, daca nu
+        //atunci il folosim si il introducem in HashSet, altfel generam altul
         while (usedNumbers.contains(this.number))
             this.number = this.generateCardNumber();
         usedNumbers.add(this.number);
 
+        //generare CVV
         this.CVV = this.generateCardCVV();
 
+        //generare data de expirare a cardului
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         c.add(Calendar.YEAR, 3);
         this.expirationDate = c.getTime();
     }
 
+    //citire de la tastatura
     public void read(Scanner in) {
         System.out.println("IBAN: ");
         this.IBAN = in.nextLine();
@@ -37,6 +44,8 @@ public class Card {
         this.name = in.nextLine();
     }
 
+    // generarea de numar card este private pt a nu putea fi folosita in exteriorul clasei
+    //ci folosita doar in constructor, la fel si pt CVV
     private String generateCardNumber() {
         String number = "";
         Random random = new Random();

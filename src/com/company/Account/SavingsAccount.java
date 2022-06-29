@@ -12,6 +12,7 @@ public class SavingsAccount extends Account{
     private final Date endDate;
     private final int interest;
 
+    //constructor folosir in etapa 1
     public SavingsAccount(String name, int clientId, int id) {
         super(name, clientId, id);
 
@@ -24,13 +25,15 @@ public class SavingsAccount extends Account{
         this.endDate = c.getTime();
     }
 
-    public SavingsAccount(String IBAN, String swift, double amount, String name, int customerId, Date startDate, Date endDate, int interest) {
-        super(IBAN, swift, amount, name, customerId);
+    //constructor folosir in etapa 2
+    public SavingsAccount(String IBAN, String swift, double amount, String name, int clientId, Date startDate, Date endDate, int interest) {
+        super(IBAN, swift, amount, name, clientId);
         this.startDate = startDate;
         this.endDate = endDate;
         this.interest = interest;
     }
 
+    //constructor folosir in etapa 3
     public SavingsAccount(ResultSet in) throws SQLException {
         super(in);
         this.startDate = in.getDate("startDate");

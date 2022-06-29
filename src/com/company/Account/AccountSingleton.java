@@ -1,14 +1,18 @@
 package com.company.Account;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountSingleton {
+    //! instanta este statica
     private static AccountSingleton instance = null;
-
     private List<Account> accounts = new ArrayList<>();
 
+    //crearea unei instante unice
     public static AccountSingleton getInstance() {
         if (instance == null)
             instance = new AccountSingleton();
@@ -38,6 +42,7 @@ public class AccountSingleton {
         return columns;
     }
 
+    //citire din csv
     public void loadFromCSV() throws IOException {
         List<String[]> columns = AccountSingleton.getColumns();
         for (String[] tokens : columns) {
@@ -53,6 +58,7 @@ public class AccountSingleton {
         AccountFactory.incrementUniqueId(columns.size());
     }
 
+    //scriere in csv
     public void dumpToCSV() throws IOException {
         FileWriter writer = new FileWriter("/Users/vladcalomfirescu/Desktop/Vlad/FAC/an 2/sem 2/PAO/Proiect/src/com/company/data/accounts.csv");
         for (Account account : this.accounts) {

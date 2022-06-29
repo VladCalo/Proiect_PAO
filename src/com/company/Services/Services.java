@@ -7,10 +7,12 @@ import com.company.Client.ClientFactory;
 import com.company.Transaction.Transaction;
 import com.company.Transaction.TransactionDatabase;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 
 public class Services {
+    //stocare
     private List<Client> clients = new ArrayList<>();
     private List<Account> accounts = new ArrayList<>();
     private List<SavingsAccount> savingsAccounts = new ArrayList<>();
@@ -20,6 +22,7 @@ public class Services {
     private final ClientFactory clientFactory = new ClientFactory();
     private final AccountFactory accountFactory = new AccountFactory();
 
+    //getters
     public List<Client> getClients() {
         return clients;
     }
@@ -33,6 +36,7 @@ public class Services {
         return transactions;
     }
 
+    //setters
     public void setClients(List<Client> clients){
         this.clients = clients;
     }
@@ -51,7 +55,7 @@ public class Services {
     private AccountDatabase accountDatabase = null;
     private SavingsAccountDatabase savingsAccountDatabase = null;
 
-    public Services(ClientDatabase clientDatabase, TransactionDatabase transactionDatabase, AccountDatabase accountDatabase, SavingsAccountDatabase savingsAccountDatabase) {
+    public Services(ClientDatabase clientDatabase, TransactionDatabase transactionDatabase, AccountDatabase accountDatabase, SavingsAccountDatabase savingsAccountDatabase) throws SQLException {
         this.clientDatabase = clientDatabase;
         this.transactionDatabase = transactionDatabase;
         this.accountDatabase = accountDatabase;
@@ -68,6 +72,7 @@ public class Services {
 
     public Services(){ }
 
+
     private Client getClientFromInput(Scanner in) throws Exception{
         if(this.clients.size()==0)
             throw new Exception("No clients added!");
@@ -77,6 +82,7 @@ public class Services {
         int clientId = Integer.parseInt(in.nextLine());
         return clients.get(clientId);
     }
+
 
     public void linkAccounts(){
         for(Account account: this.accounts)
@@ -184,7 +190,7 @@ public class Services {
         account1.setAmount(account1.getAmount() - amount);
         account2.setAmount(account2.getAmount() + amount);
 
-        var newTransaction = new Transaction(IBAN1, IBAN2, amount);
+        Transaction newTransaction = new Transaction(IBAN1, IBAN2, amount);
         this.transactions.add(newTransaction);
         System.out.println("Transaction finished");
     }

@@ -1,12 +1,11 @@
 package com.company.Account;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//! CRUD
 public class AccountDatabase {
     Connection connection;
 
@@ -14,64 +13,53 @@ public class AccountDatabase {
         this.connection = connection;
     }
 
-    public List<Account> read(){
+    //citim si returnam conturile folosinf "SELECT <<all>> FROM Accounts"
+    public List<Account> read() throws SQLException {
         List<Account> accounts = new ArrayList<>();
-        try{
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM Accounts");
-            while(result.next()) {
-                Account current = new Account(result);
-                accounts.add(current);
-            }
-            statement.close();
-        }catch (Exception e){
-            System.out.println(e.toString());
+        Statement statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT * FROM Accounts");
+        while (result.next()) {
+            Account current = new Account(result);
+            accounts.add(current);
         }
+        statement.close();
         return accounts;
     }
 
-    public void update(Account newAccount){
-        try{
-            String query = "UPDATE Accounts SET amount = ?, name = ?, customerId = ? WHERE IBAN = ? AND swift = ?";
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setDouble(1, newAccount.getAmount());
-            preparedStmt.setString(2, newAccount.getName());
-            preparedStmt.setInt(3, newAccount.getClientId());
-            preparedStmt.setString(4, newAccount.getIBAN());
-            preparedStmt.setString(5, newAccount.getSwift());
-            preparedStmt.executeUpdate();
-            preparedStmt.close();
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
+    //update la suma, nume si clientId dupa IBAN si SWIFT
+    public void update(Account newAccount) throws SQLException {
+        String query = "UPDATE Accounts SET amount = ?, name = ?, clientId = ? WHERE IBAN = ? AND swift = ?";
+        PreparedStatement preparedStmt = connection.prepareStatement(query);
+        preparedStmt.setDouble(1, newAccount.getAmount());
+        preparedStmt.setString(2, newAccount.getName());
+        preparedStmt.setInt(3, newAccount.getClientId());
+        preparedStmt.setString(4, newAccount.getIBAN());
+        preparedStmt.setString(5, newAccount.getSwift());
+        preparedStmt.executeUpdate();
+        preparedStmt.close();
     }
 
-    public void create(Account account){
-        try{
-            String query = "INSERT INTO Accounts (IBAN, swift, amount, name, customerId) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, account.getIBAN());
-            preparedStmt.setString(2, account.getSwift());
-            preparedStmt.setDouble(3, account.getAmount());
-            preparedStmt.setString(4, account.getName());
-            preparedStmt.setInt(5, account.getClientId());
-            preparedStmt.execute();
-            preparedStmt.close();
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
+    // creaza conturile
+    public void create(Account account) throws SQLException {
+        String query = "INSERT INTO Accounts (IBAN, swift, amount, name, clientId) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement preparedStmt = connection.prepareStatement(query);
+        preparedStmt.setString(1, account.getIBAN());
+        preparedStmt.setString(2, account.getSwift());
+        preparedStmt.setDouble(3, account.getAmount());
+        preparedStmt.setString(4, account.getName());
+        preparedStmt.setInt(5, account.getClientId());
+        preparedStmt.execute();
+        preparedStmt.close();
     }
 
-    public void delete(Account account){
-        try{
-            String query = "DELETE FROM Accounts WHERE IBAN = ?";
-            PreparedStatement preparedStmt = connection.prepareStatement(query);
-            preparedStmt.setString(1, account.getIBAN());
-            preparedStmt.execute();
-            preparedStmt.close();
-        }catch (Exception e){
-            System.out.println(e.toString());
-        }
+    //sterge conturile identificandu le dupa IBAN
+    public void delete(Account account) throws SQLException {
+        String query = "DELETE FROM Accounts WHERE IBAN = ?";
+        PreparedStatement preparedStmt = connection.prepareStatement(query);
+        preparedStmt.setString(1, account.getIBAN());
+        preparedStmt.execute();
+        preparedStmt.close();
+
     }
 }
 

@@ -18,10 +18,12 @@ public class Account {
     protected String name;
     protected int clientId;
 
+    //cardurile asociate contului
     protected List<Card> cards = new ArrayList<>();
 
     private final CardFactory cardFactory = new CardFactory();
 
+    //constructorul folosit in etapa 1
     public Account(String IBAN, String swift, double amount, String name, int clientId) {
         this.IBAN = IBAN;
         this.swift = swift;
@@ -31,6 +33,7 @@ public class Account {
 
     }
 
+    //constructorul folosit in etapa 2
     public Account(String name, int clientId, int id) {
         this.IBAN = this.generateIBAN(id);
         this.swift = this.generateSwift();
@@ -39,6 +42,7 @@ public class Account {
         this.clientId = clientId;
     }
 
+    //constructorul folosit in etapa 3
     public Account(ResultSet in) throws SQLException {
         this.IBAN = in.getString("IBAN");
         this.swift = in.getString("swift");
@@ -47,17 +51,29 @@ public class Account {
         this.clientId = in.getInt("clientId");
     }
 
+    //crearea unui nou card
     public void addCard(String name) {
         Card newCard = cardFactory.addCard(this.IBAN, name);
         cards.add(newCard);
     }
 
+    //generare IBAN si SWIFT
     private String generateIBAN(int id) {
         return "RO06BRDB" + id;
     }
 
     private String generateSwift() {
         return "SWIFTBRDB";
+    }
+
+    //filtreaza tranzactiile totale dupa IBAN, adica tranzactiile asociate contului si le sorteaza dupa data creari acestora
+    public List<Transaction> filterTransactions(List<Transaction> allTransactions) {
+        List<Transaction> transactions = new ArrayList<>();
+        for (Transaction transaction : allTransactions)
+            if (transaction.getFromIBAN().equals(this.IBAN))
+                transactions.add(transaction);
+        transactions.sort(new CompTransaction());
+        return transactions;
     }
 
     public String toCSV() {
@@ -120,15 +136,6 @@ public class Account {
 
     public CardFactory getCardFactory() {
         return cardFactory;
-    }
-
-    public List<Transaction> filterTransactions(List<Transaction> allTransactions) {
-        List<Transaction> transactions = new ArrayList<>();
-        for (var transaction : allTransactions)
-            if (transaction.getFromIBAN().equals(this.IBAN))
-                transactions.add(transaction);
-        transactions.sort(new CompTransaction());
-        return transactions;
     }
 
     public void setIBAN(String IBAN) {

@@ -1,15 +1,20 @@
 package com.company.Client;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientSingleton {
+    //! instanta este statica
     private static ClientSingleton instance = null;
     private List<Client> clients = new ArrayList<Client>();
 
+    //crearea unei instante unice
     public static ClientSingleton getInstance() {
         if (instance == null)
             instance = new ClientSingleton();

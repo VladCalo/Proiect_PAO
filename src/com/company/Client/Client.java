@@ -18,6 +18,7 @@ public class Client {
     private String phone;
     private Address address;
 
+    //constructor etapa 1
     public Client(int clientId, String name, String CNP, Date birthDate, String email, String phone, Address address) {
         this.clientId = clientId;
         this.name = name;
@@ -28,26 +29,13 @@ public class Client {
         this.address = address;
     }
 
+    //constructor cu citire de la tastatura
     public Client(int clientId, Scanner in) throws ParseException {
         this.clientId = clientId;
         this.read(in);
     }
 
-    public Client(int clientId, ResultSet in) throws SQLException {
-        this.clientId = clientId;
-        this.read(in);
-    }
-
-
-    public void read(ResultSet in) throws SQLException {
-        this.name = in.getString("Name");
-        this.CNP = in.getString("CNP");
-        this.birthDate = in.getDate("birthDate");
-        this.email = in.getString("email");
-        this.phone = in.getString("phone");
-        this.address = new Address(in);
-    }
-
+    //citire de la tastatura
     public void read(Scanner in) throws ParseException {
         in.nextLine();
         System.out.println("Name: ");
@@ -64,18 +52,34 @@ public class Client {
         this.address = new Address(in);
     }
 
+    //constructor etapa 3
+    public Client(int clientId, ResultSet in) throws SQLException {
+        this.clientId = clientId;
+        this.read(in);
+    }
+
+    public void read(ResultSet in) throws SQLException {
+        this.name = in.getString("Name");
+        this.CNP = in.getString("CNP");
+        this.birthDate = in.getDate("birthDate");
+        this.email = in.getString("email");
+        this.phone = in.getString("phone");
+        this.address = new Address(in);
+    }
+
+    //filtrarea tuturor conturilor dupa clientId-ul obiectului curent
     public List<Account> filterAccounts(List<Account> allAccounts) {
-        var accounts = new ArrayList<Account>();
-        for (var account : allAccounts)
+        ArrayList<Account> accounts = new ArrayList<Account>();
+        for (Account account : allAccounts)
             if (account.getClientId() == this.getClientId())
                 accounts.add(account);
         return accounts;
     }
 
     public List<Transaction> filterTransactions(List<Account> allAccounts, List<Transaction> allTransactions) {
-        var transactions = new ArrayList<Transaction>();
-        var accounts = this.filterAccounts(allAccounts);
-        for (var account : accounts)
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        List<Account> accounts = this.filterAccounts(allAccounts);
+        for (Account account : accounts)
             transactions.addAll(account.filterTransactions(allTransactions));
         return transactions;
     }

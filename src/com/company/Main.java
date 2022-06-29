@@ -1,3 +1,10 @@
+//
+//  Main.java
+//  Proiect
+//
+//  Created by Vlad Calomfirescu on 27.03.2022.
+//
+
 package com.company;
 
 import com.company.Account.AccountDatabase;
@@ -15,9 +22,13 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    //comenzile din meniu
     static List<Integer> commands = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    //comenzile folosite la audit
     static List<String> availableCommands = Arrays.asList("1. create_client", "2. create_client_card", "3. get_client", "4. get_client_amount", "5. get_client_accounts", "6. load_client_account", "7. create_transaction", "8. create_client_account", "9. create_client_savings_account", "10. close_client_account", "11. get_client_transactions", "12. end");
 
+
+    //conetctare la BD
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/PAO";
         String user = "root";
@@ -89,9 +100,9 @@ public class Main {
                 case 9 -> services.createClientSavingsAccount(in);
                 case 10 -> services.closeAccount(in);
                 case 11 -> services.getClientTransactions(in);
-                //case "help" -> Main.printAllCommands();
                 case 12 -> end = true;
             }
+            //salvare in audit
             if (commands.contains(command))
                 audit.logAction(availableCommands.get(commands.indexOf(command)));
         }
@@ -164,7 +175,6 @@ public class Main {
 //                case 9 -> services.createClientSavingsAccount(in);
 //                case 10 -> services.closeAccount(in);
 //                case 11 -> services.getClientTransactions(in);
-//                //case "help" -> Main.printAllCommands();
 //                case 12 -> end = true;
 //            }
 //            if (commands.contains(command))

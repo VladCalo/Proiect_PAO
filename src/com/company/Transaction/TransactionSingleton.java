@@ -9,10 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionSingleton {
+
+    //! instanta este statica
     private static TransactionSingleton instance = null;
 
     private List<Transaction> transactions = new ArrayList<Transaction>();
 
+    //crearea unei instante unice
     public static TransactionSingleton getInstance() {
         if (instance == null)
             instance = new TransactionSingleton();

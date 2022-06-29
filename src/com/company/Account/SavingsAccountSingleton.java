@@ -1,15 +1,20 @@
 package com.company.Account;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SavingsAccountSingleton {
+    //! instanta este statica
     private static SavingsAccountSingleton instance = null;
     private List<SavingsAccount> savingsAccounts = new ArrayList<SavingsAccount>();
 
+    //crearea unei instante unice
     public static SavingsAccountSingleton getInstance() {
         if (instance == null)
             instance = new SavingsAccountSingleton();
@@ -61,7 +66,7 @@ public class SavingsAccountSingleton {
 
     public void dumpToCSV() throws IOException {
 
-        var writer = new FileWriter("/Users/vladcalomfirescu/Desktop/Vlad/FAC/an 2/sem 2/PAO/Proiect/src/com/company/data/savings_account.csv");
+        FileWriter writer = new FileWriter("/Users/vladcalomfirescu/Desktop/Vlad/FAC/an 2/sem 2/PAO/Proiect/src/com/company/data/savings_account.csv");
         for (SavingsAccount account : this.savingsAccounts) {
             writer.write(account.toCSV());
             writer.write("\n");
