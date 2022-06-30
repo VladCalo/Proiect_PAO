@@ -72,6 +72,21 @@ public class Services {
 
     public Services(){ }
 
+    //! Functiile folosite ca servicii
+    /*
+ - Create client
+ - Create client card
+ - Get client
+ - Get customer amount
+ - Get customer accounts
+ - Get client account
+ - Load client account
+ - Create transaction
+ - Create client account
+ - Create client savings accounts
+ - Close client account
+ - Get client transactions
+     */
 
     private Client getClientFromInput(Scanner in) throws Exception{
         if(this.clients.size()==0)
